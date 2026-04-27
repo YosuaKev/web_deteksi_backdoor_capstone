@@ -12,7 +12,7 @@ import UserManagement from "./pages/UserManagement.jsx";
 function App() {
   return (
     <AuthProvider>
-      <Router basename="/Capstone">
+      <Router basename="/">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           {/* Protected Routes */}
