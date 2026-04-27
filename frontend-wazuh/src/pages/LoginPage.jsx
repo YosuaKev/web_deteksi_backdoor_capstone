@@ -64,7 +64,6 @@ const LoginPage = () => {
 
     try {
       setIsLoading(true);
-      const captchaToken = recaptchaRef.current.getValue();
 
       const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
@@ -74,7 +73,6 @@ const LoginPage = () => {
         body: JSON.stringify({
           email,
           password,
-          captchaToken,
         }),
       });
 
@@ -213,9 +211,8 @@ const LoginPage = () => {
           {/* Login Button */}
           <button
             type="submit"
-            disabled={!isRecaptchaFilled || isLoading}
-            className={`w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg font-semibold transition-all duration-200 ${
-              isRecaptchaFilled && !isLoading
+           className={`w-full flex justify-center items-center gap-2 py-2.5 px-4 rounded-lg font-semibold transition-all duration-200 ${
+              !isLoading
                 ? "bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white shadow-lg hover:shadow-cyan-500/50"
                 : "bg-slate-600 text-slate-400 cursor-not-allowed opacity-50"
             }`}
