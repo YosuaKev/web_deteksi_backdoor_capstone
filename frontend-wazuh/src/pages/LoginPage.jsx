@@ -9,7 +9,6 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import ReCAPTCHA from "react-google-recaptcha";
 import { useAuth } from "../hooks/useAuth";
 import logo from "../assets/Undip.svg";
 import { API_BASE_URL } from "../config/Api";
@@ -17,12 +16,10 @@ import { API_BASE_URL } from "../config/Api";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isAuthenticated } = useAuth();
-  const recaptchaRef = useRef();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isRecaptchaFilled, setIsRecaptchaFilled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [notification, setNotification] = useState({
     show: false,
@@ -51,22 +48,10 @@ const LoginPage = () => {
     setPassword(sanitizeInput(e.target.value));
   };
 
-  const handleRecaptchaChange = (value) => {
-    setIsRecaptchaFilled(!!value);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setNotification({ show: false, message: "", type: "error" });
-
-    if (!isRecaptchaFilled) {
-      setNotification({
-        show: true,
-        message: "Silakan verifikasi CAPTCHA terlebih dahulu",
-        type: "error",
-      });
-      return;
-    }
 
     if (!email || !password) {
       setNotification({
@@ -118,8 +103,6 @@ const LoginPage = () => {
         message: error.message || "Terjadi kesalahan saat login",
         type: "error",
       });
-      recaptchaRef.current.reset();
-      setIsRecaptchaFilled(false);
     } finally {
       setIsLoading(false);
     }
@@ -225,16 +208,6 @@ const LoginPage = () => {
                 )}
               </button>
             </div>
-          </div>
-
-          {/* CAPTCHA */}
-          <div className="bg-slate-700/30 p-3 rounded-lg border border-slate-600/50">
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey="6Le7BYksAAAAAASn99_SYX6OAX7r8siw5H8m_YWr"
-              onChange={handleRecaptchaChange}
-              theme="dark"
-            />
           </div>
 
           {/* Login Button */}
